@@ -1,0 +1,124 @@
+﻿@model Thrifty.Models.Item
+@using Thrifty.Authentication;
+@{
+    ViewData["navTitel"] = $"Create New Item";
+    ViewData["navActive"] = "Item";
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+<style>
+    .radio-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
+
+    .form-check-label {
+        padding: 0px;
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <div cite="row">
+            <div class="col-md-4">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="name" class="control-label"></label>
+                        <input asp-for="name" class="form-control" />
+                        <span asp-validation-for="name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="description" class="control-label"></label>
+                        <textarea asp-for="description" class="form-control"> </textarea>
+                        <span asp-validation-for="description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MadeIn" class="control-label"></label>
+                        <textarea asp-for="MadeIn" class="form-control"> </textarea>
+                        <span asp-validation-for="MadeIn" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="price" class="control-label"></label>
+                        <input asp-for="price" class="form-control" />
+                        <span asp-validation-for="price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="color" class="control-label"></label>
+                        <input asp-for="color" class="form-control" />
+                        <span asp-validation-for="color" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="size" class="control-label"></label>
+                        <input asp-for="size" class="form-control" />
+                        <span asp-validation-for="size" class="text-danger"></span>
+                    </div>
+
+                    @if (AuthRole.IsUserInRoll("Admin"))
+                    {
+                        <div class="form-group">
+                            <label asp-for="userId" class="control-label"></label>
+                            <select asp-for="userId" class="form-control" asp-items="ViewBag.userId">
+                                <option disabled selected>--- SELECT ---</option>
+                            </select>
+                            <span asp-validation-for="userId" class="text-danger"></span>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <label asp-for="ItemState" class="control-label"></label>
+                        <div class="radio-container" style="width:100%;margin-inline-start: 20px;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ItemState" id="ItemState" value="1" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    VeryGood
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ItemState" value="2" id="ItemState">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Good
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ItemState" value="3" id="ItemState">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    Bad
+                                </label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="ItemState" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ItemTypeId" class="control-label"></label>
+                        <select asp-for="ItemTypeId" class="form-control" asp-items="ViewBag.ItemTypeId">
+                            <option disabled selected>--- SELECT ---</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-check mt-4 mb-4">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" asp-for="outOfStock" /> @Html.DisplayNameFor(model => model.outOfStock)
+                        </label>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <input type="submit" value="Create" class="btn btn-secondary" />
+                        </div>
+                        <div class="ml-3">
+                            <a asp-action="Index" class="btn btn-light">Back to List</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

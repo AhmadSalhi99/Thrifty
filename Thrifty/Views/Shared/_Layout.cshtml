@@ -1,0 +1,180 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Thrifty.Authentication;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Thrifty</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="~/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="~/css/styles.css">
+    <style>
+        .nav {
+            height: 10vh !important;
+        }
+
+        .account-btn {
+            padding-inline: 23px;
+            padding-block: 5px;
+            border: 1px solid var(--text-color);
+            border-radius: 3px;
+        }
+
+        .logout {
+            fill: var(--title-color);
+        }
+
+        .cart-icon {
+            stroke: var(--title-color);
+        }
+
+        .active-link {
+            text-decoration: none;
+        }
+
+        .checkOut-alert {
+            color: #0f5132;
+            background-color: #d1e7dd;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            padding-inline: 36px;
+            padding-block: 12px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .login-alert {
+            color: #0f5132;
+            background-color: #d1e7dd;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            padding-inline: 36px;
+            padding-block: 12px;
+            font-size: 20px;
+            text-align: center;
+            width: 20%;
+            float: right;
+            margin-inline-end: 21px;
+        }
+
+            .login-alert > p {
+            font-weight: 600;
+        }
+
+            .checkOut-alert > p {
+                font-weight: 600;
+            }
+
+        .account-icon {
+            fill: var(--title-color);
+        }
+    </style>
+</head>
+<body>
+
+
+
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="@Url.Action("Index","Home")#home" class="nav__logo">
+                <img id="nav-logo" class="light" src="~/img/logo.png" style="width: 120px;" />
+            </a>
+            <div class="nav__menu" id="nav-menu ">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="@Url.Action("Index","Home")#home" class="nav__link active-link">
+                            <i class="ri-home-4-line"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="@Url.Action("Index","Home")#new" class="nav__link active-link">
+                            <i class="ri-price-tag-3-line"></i>
+                            <span>Most Recent</span>
+                        </a>
+                    </li>
+                    @if (Context.Session.GetString("LogedUserEmail") == null)
+                    {
+                        <li class="nav__item">
+                            <a href="@Url.Action("Login","Account")" class="nav__link account-btn active-link">
+                                <span>Login</span>
+                            </a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        @if (AuthRole.IsUserInRoll("Admin") || AuthRole.IsUserInRoll("Seller"))
+                        {
+                            <li class="nav__item">
+                                <a href="@Url.Action("Index","Dashboard")" class="nav__link account-btn active-link">
+                                    <span>Dashboard</span>
+                                </a>
+
+                            </li>
+                        }
+
+                        <li>
+                            <a href="@Url.Action("Logout","Account")" class="nav__link active-link">
+                                <span>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="logout" d="M12.6996 0.145836C11.4465 0.145836 10.4354 0.145836 9.64067 0.253086C8.81567 0.363086 8.12084 0.601419 7.56901 1.15234C7.08867 1.63359 6.84484 2.22484 6.71742 2.91967C6.59367 3.59525 6.56984 4.42117 6.56434 5.413C6.56337 5.59534 6.63487 5.77059 6.76311 5.90021C6.89136 6.02983 7.06584 6.1032 7.24817 6.10417C7.43051 6.10514 7.60577 6.03364 7.73538 5.9054C7.865 5.77715 7.93837 5.60267 7.93934 5.42034C7.94484 4.41842 7.97051 3.708 8.06951 3.16809C8.16576 2.64925 8.31884 2.34767 8.54159 2.12492C8.79551 1.871 9.15209 1.706 9.82492 1.61525C10.517 1.52267 11.4346 1.52084 12.75 1.52084H13.6667C14.983 1.52084 15.9006 1.52267 16.5927 1.61525C17.2655 1.706 17.6212 1.87192 17.876 2.12492C18.129 2.37884 18.294 2.7345 18.3848 3.40825C18.4783 4.09942 18.4792 5.01792 18.4792 6.33334V13.6667C18.4792 14.9821 18.4783 15.8997 18.3848 16.5927C18.294 17.2655 18.129 17.6212 17.8751 17.8751C17.6212 18.129 17.2655 18.294 16.5927 18.3848C15.9006 18.4773 14.983 18.4792 13.6667 18.4792H12.75C11.4346 18.4792 10.517 18.4773 9.82401 18.3848C9.15209 18.294 8.79551 18.1281 8.54159 17.8751C8.31884 17.6514 8.16576 17.3508 8.06951 16.8319C7.97051 16.292 7.94484 15.5816 7.93934 14.5797C7.93886 14.4894 7.9206 14.4001 7.8856 14.3169C7.85061 14.2336 7.79957 14.1581 7.73538 14.0946C7.6712 14.0311 7.59514 13.9809 7.51155 13.9468C7.42795 13.9127 7.33846 13.8954 7.24817 13.8958C7.15789 13.8963 7.06859 13.9146 6.98536 13.9496C6.90213 13.9846 6.82661 14.0356 6.76311 14.0998C6.69961 14.164 6.64938 14.24 6.61527 14.3236C6.58117 14.4072 6.56386 14.4967 6.56434 14.587C6.56984 15.5788 6.59367 16.4048 6.71742 17.0803C6.84576 17.7752 7.08867 18.3664 7.56992 18.8477C8.12084 19.3995 8.81659 19.636 9.64159 19.7478C10.4354 19.8542 11.4465 19.8542 12.6996 19.8542H13.7171C14.9711 19.8542 15.9813 19.8542 16.776 19.7478C17.601 19.636 18.2958 19.3995 18.8477 18.8477C19.3995 18.2958 19.636 17.601 19.7478 16.776C19.8542 15.9813 19.8542 14.9702 19.8542 13.7171V6.28292C19.8542 5.02984 19.8542 4.01875 19.7478 3.224C19.6369 2.399 19.3995 1.70417 18.8477 1.15234C18.2958 0.600503 17.601 0.364003 16.776 0.253086C15.9813 0.145836 14.9702 0.145836 13.7171 0.145836H12.6996Z" fill="black" />
+                                        <path class="logout" d="M12.75 9.3125C12.9323 9.3125 13.1072 9.38494 13.2361 9.51387C13.3651 9.6428 13.4375 9.81767 13.4375 10C13.4375 10.1823 13.3651 10.3572 13.2361 10.4861C13.1072 10.6151 12.9323 10.6875 12.75 10.6875H2.69142L4.489 12.2275C4.62758 12.3461 4.71335 12.515 4.72744 12.6969C4.74154 12.8787 4.68281 13.0588 4.56417 13.1973C4.44553 13.3359 4.2767 13.4217 4.09482 13.4358C3.91294 13.4499 3.73291 13.3911 3.59434 13.2725L0.386003 10.5225C0.310529 10.458 0.249934 10.3778 0.208386 10.2876C0.166839 10.1974 0.145325 10.0993 0.145325 10C0.145325 9.9007 0.166839 9.80257 0.208386 9.71237C0.249934 9.62217 0.310529 9.54205 0.386003 9.4775L3.59434 6.7275C3.66295 6.66876 3.74247 6.62411 3.82834 6.59609C3.91421 6.56808 4.00476 6.55725 4.09482 6.56423C4.18488 6.57121 4.27268 6.59586 4.35321 6.63677C4.43374 6.67768 4.50542 6.73406 4.56417 6.80267C4.62291 6.87129 4.66757 6.9508 4.69558 7.03668C4.7236 7.12255 4.73442 7.2131 4.72744 7.30316C4.72046 7.39321 4.69582 7.48101 4.6549 7.56154C4.61399 7.64208 4.55762 7.71376 4.489 7.7725L2.69234 9.3125H12.75Z" fill="black" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("AccountInformation","Account")" class="nav__link active-link">
+                                <span>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="account-icon" d="M5.85 17.1C6.7 16.45 7.65 15.9373 8.7 15.562C9.75 15.1867 10.85 14.9993 12 15C13.15 15 14.25 15.1877 15.3 15.563C16.35 15.9383 17.3 16.4507 18.15 17.1C18.7333 16.4167 19.1877 15.6417 19.513 14.775C19.8383 13.9083 20.0007 12.9833 20 12C20 9.78333 19.221 7.89567 17.663 6.337C16.105 4.77833 14.2173 3.99933 12 4C9.78333 4 7.89567 4.779 6.337 6.337C4.77833 7.895 3.99933 9.78267 4 12C4 12.9833 4.16267 13.9083 4.488 14.775C4.81333 15.6417 5.26733 16.4167 5.85 17.1ZM12 13C11.0167 13 10.1873 12.6627 9.512 11.988C8.83667 11.3133 8.49933 10.484 8.5 9.5C8.5 8.51667 8.83733 7.68733 9.512 7.012C10.1867 6.33667 11.016 5.99933 12 6C12.9833 6 13.8127 6.33733 14.488 7.012C15.1633 7.68667 15.5007 8.516 15.5 9.5C15.5 10.4833 15.1627 11.3127 14.488 11.988C13.8133 12.6633 12.984 13.0007 12 13ZM12 22C10.6167 22 9.31667 21.7373 8.1 21.212C6.88333 20.6867 5.825 19.9743 4.925 19.075C4.025 18.175 3.31267 17.1167 2.788 15.9C2.26333 14.6833 2.00067 13.3833 2 12C2 10.6167 2.26267 9.31667 2.788 8.1C3.31333 6.88333 4.02567 5.825 4.925 4.925C5.825 4.025 6.88333 3.31267 8.1 2.788C9.31667 2.26333 10.6167 2.00067 12 2C13.3833 2 14.6833 2.26267 15.9 2.788C17.1167 3.31333 18.175 4.02567 19.075 4.925C19.975 5.825 20.6877 6.88333 21.213 8.1C21.7383 9.31667 22.0007 10.6167 22 12C22 13.3833 21.7373 14.6833 21.212 15.9C20.6867 17.1167 19.9743 18.175 19.075 19.075C18.175 19.975 17.1167 20.6877 15.9 21.213C14.6833 21.7383 13.3833 22.0007 12 22ZM12 20C12.8833 20 13.7167 19.8707 14.5 19.612C15.2833 19.3533 16 18.9827 16.65 18.5C16 18.0167 15.2833 17.6457 14.5 17.387C13.7167 17.1283 12.8833 16.9993 12 17C11.1167 17 10.2833 17.1293 9.5 17.388C8.71667 17.6467 8 18.0173 7.35 18.5C8 18.9833 8.71667 19.3543 9.5 19.613C10.2833 19.8717 11.1167 20.0007 12 20ZM12 11C12.4333 11 12.7917 10.8583 13.075 10.575C13.3583 10.2917 13.5 9.93333 13.5 9.5C13.5 9.06667 13.3583 8.70833 13.075 8.425C12.7917 8.14167 12.4333 8 12 8C11.5667 8 11.2083 8.14167 10.925 8.425C10.6417 8.70833 10.5 9.06667 10.5 9.5C10.5 9.93333 10.6417 10.2917 10.925 10.575C11.2083 10.8583 11.5667 11 12 11Z" fill="black" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a href="@Url.Action("Index","Cart")" class="nav__link active-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="cart-icon" d="M19.5 22C19.8978 22 20.2794 21.842 20.5607 21.5607C20.842 21.2794 21 20.8978 21 20.5C21 20.1022 20.842 19.7206 20.5607 19.4393C20.2794 19.158 19.8978 19 19.5 19C19.1022 19 18.7206 19.158 18.4393 19.4393C18.158 19.7206 18 20.1022 18 20.5C18 20.8978 18.158 21.2794 18.4393 21.5607C18.7206 21.842 19.1022 22 19.5 22ZM9.5 22C9.89782 22 10.2794 21.842 10.5607 21.5607C10.842 21.2794 11 20.8978 11 20.5C11 20.1022 10.842 19.7206 10.5607 19.4393C10.2794 19.158 9.89782 19 9.5 19C9.10218 19 8.72064 19.158 8.43934 19.4393C8.15804 19.7206 8 20.1022 8 20.5C8 20.8978 8.15804 21.2794 8.43934 21.5607C8.72064 21.842 9.10218 22 9.5 22Z" fill="black" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path class="cart-icon" d="M5 4H22L20 15M5 4L7 15H20M5 4C4.833 3.333 4 2 2 2M20 15H5.23C3.446 15 2.5 15.781 2.5 17C2.5 18.219 3.446 19 5.23 19H19.5" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+            <i class="ri-moon-line" id="theme-button"></i>
+        </nav>
+        @if (TempData.Peek("checkOut") != null && !string.IsNullOrEmpty((string)TempData.Peek("checkOut")!))
+        {
+            <div class="checkOut-alert">
+                <p>Success!</p> Your order has been placed successfully.
+            </div>
+        }
+        @if (TempData["login"] != null && !string.IsNullOrEmpty((string)TempData["login"]))
+        {
+            <div class="login-alert">
+                <p>Hi!</p> @Context.Session.GetString("LogedUserEmail").Split("@")[0].
+            </div>
+        }
+    </header>
+    @RenderBody()
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/scrollreveal.min.js"></script>
+    <script src="~/js/swiper-bundle.min.js"></script>
+    <script src="~/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+@if (TempData["checkOut"] != null && !string.IsNullOrEmpty((string)TempData["checkOut"]))
+{
+    <script>
+        localStorage.removeItem("cart");
+    </script>
+}

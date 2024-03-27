@@ -1,0 +1,228 @@
+﻿@model Thrifty.Models.Item
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap-grid.min.css" rel="stylesheet" />
+<style>
+    .main-image {
+        width: 565px;
+        height: 544px;
+        object-fit: cover;
+    }
+
+    .sub-image {
+        width: 138px;
+        height: 145px;
+        object-fit: cover;
+        margin: 0;
+    }
+    .main{
+        background-color: var(--bg-color);
+        padding-bottom: 200px;
+    }
+    .home {
+        padding-top: 150px;
+        min-height: 100vh;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .f-wrap {
+        flex-wrap: wrap;
+    }
+
+    .gap-30 {
+        gap: 30px;
+    }
+
+    .f-wrap-reverse {
+        flex-wrap: wrap-reverse;
+    }
+
+    .item-details {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .item_type {
+        color: var(--title-color);
+        font-size: 20px;
+    }
+
+    .item_name {
+        color: var(--title-color);
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .item_size {
+        color: var(--title-color);
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .item_price {
+        color: var(--title-color);
+        font-size: 20px;
+    }
+
+    .item_description {
+        color: var(--title-color);
+        font-size: 18px;
+        padding-top: 30px;
+    }
+
+    .price-add {
+        width: 100%;
+        margin-top: 50px;
+    }
+
+    .btn-Add-cart {
+        padding-inline: 15px;
+        padding-block: 5px;
+        background-color: var(--bg-color-light);
+        color: var(--title-color);
+        border: none;
+    }
+
+    .alert {
+        border: 0;
+        border-radius: 0;
+        color: #FFFFFF;
+        padding: 10px 15px;
+        font-size: 14px;
+        position:absolute;
+        top: 100px;
+        right: 58px;
+        font-size: 18px;
+        font-family: inherit;
+        border-radius: 5px;
+        padding-inline: 35px;
+    }
+
+
+    .alert-success {
+        color: #0f5132;
+        background-color: #d1e7dd;
+        border-color: #badbcc
+    }
+
+    .alert-danger {
+        color: #842029;
+        background-color: #f8d7da;
+        border-color: #f5c2c7
+    }
+   
+    .flex-shrink-0 {
+        flex-shrink: 0 !important;
+    }
+
+    .hiden{
+        display:none;
+    }
+</style>
+
+
+
+<div class="alert alert-success hiden" role="alert">
+    Item Added To Cart Successfully
+</div>
+
+<div class="alert alert-danger hiden" role="alert">
+    Item Already Added To Cart
+</div>
+
+<main class="main">
+    <section class="home section">
+        <div class="container">
+            <div class="row d-flex justify-content-between f-wrap-reverse gap-30">
+                <div class="col-md-5">
+                    <img src="data:image/png;base64,@Model?.mainImage?.imageBase" alt="new image" class="new__img main-image">
+                    <div class="d-flex" style="gap:10px;">
+                        @foreach (var image in Model?.itemImages?.Where(x => x.mainImage == false).ToList())
+                        {
+                            <img src="data:image/png;base64,@image.imageBase" alt="new image" class="new__img sub-image">
+                        }
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="item-details">
+                        
+                        <p class="item_type">@Model.ItemType.name</p>
+                        <p class="item_name">@Model.name</p>
+                        <br />
+                        <br />
+                        <p class="item_size">Size : @Model.size</p>
+                        <p class="item_description">@Model.description</p>
+                        <br />
+                        <p class="MadeIn">Made In : @Model.MadeIn</p>
+                        <br />
+                        <div>
+                            @if (Model.ItemState == 1)
+                            {
+                                <p>Very Good</p>
+                            }
+                            else if (Model.ItemState == 2)
+                            {
+                                <p>Good</p>
+                            }
+                            else if (Model.ItemState == 3)
+                            {
+                                <p>Bad</p>
+                            }
+                        </div>
+
+                        <div class="d-flex justify-content-between price-add">
+                            <p class="item_price">@Model.price JOD</p>
+                            <button class="btn-Add-cart" onclick="addToCart(@Model.id)">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+@section scripts{
+    <script>
+        function addToCart(productId) {
+            // Retrieve existing cart data from local storage (if any)
+            var cartData = localStorage.getItem('cart');
+
+            // Parse the JSON data or initialize an empty array if no data exists
+            var cartItems = cartData ? JSON.parse(cartData) : [];
+
+            // Check if the product already exists in the cart
+            var exists = cartItems.some(item => item === productId);
+
+            if (!exists) {
+                // Add the new product to the cart
+                cartItems.push(productId);
+                // Store the updated cart data in local storage
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                document.querySelector(".alert-success").classList.remove("hiden")
+                document.querySelector(".alert-danger").classList.add("hiden")
+
+            } else {
+
+                document.querySelector(".alert-success").classList.add("hiden")
+                document.querySelector(".alert-danger").classList.remove("hiden")
+                // Handle the case where the product is already in the cart
+                console.log('Product already exists in the cart.');
+            }
+        }
+    </script>
+}

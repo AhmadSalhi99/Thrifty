@@ -1,0 +1,40 @@
+﻿@model ItemImages
+@{
+    ViewData["navTitel"] = $"Add Image For {Model.item.name}";
+    ViewData["navActive"] = "Item";
+    ViewData["Title"] = "Add Image";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+
+
+
+<div class="content">
+    <div class="container-fluid">
+        <div cite="row">
+            <div class="col-md-4">
+                <form asp-action="AddImage" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="itemId" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ImageFile" class="control-label"></label>
+                        <input asp-for="ImageFile" class="form-control" />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <input type="submit" value="Add" class="btn btn-secondary" />
+                        </div>
+                        <div class="ml-3">
+                            <a asp-action="Images" asp-route-id="@Model.itemId" class="btn btn-light">Back to List</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

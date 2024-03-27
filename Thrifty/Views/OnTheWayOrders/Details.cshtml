@@ -1,0 +1,80 @@
+﻿@using Thrifty.Models
+@model IEnumerable<OrderDetails>
+
+@{
+    ViewData["navTitel"] = "All On The Way Orders";
+    ViewData["navActive"] = "OnTheWayOrders";
+    ViewData["Title"] = "On The Way Orders";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+
+
+
+<link href="~/css/jqdatatable/jquery.datatables.min.css" rel="stylesheet" />
+
+<div class="content">
+    <div class="container-fluid">
+        <hr>
+        <div cite="row">
+            <table id="OrdersDetails">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrderNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Item.name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Item.size)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Item.ItemType!.name)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.OrderNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Item.size)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Item.ItemType!.name)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="ml-3">
+    <a asp-action="Index" class="btn btn-light">Back to List</a>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#OrdersDetails').dataTable({
+            });
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,156 @@
+﻿@model Item
+@{
+    ViewData["navTitel"] = $"Image List For {Model.name}";
+    ViewData["navActive"] = "Item";
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+
+<style>
+    .image-card-container {
+        position: relative;
+        width: 256px;
+        object-fit: cover;
+        height: 435px;
+        box-shadow: 1px 1px 6px -2px #000;
+    }
+
+    .image-card {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-action {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 68.55%, rgba(0, 0, 0, 0.2) 100%);
+        display:flex;
+        align-items:end;
+        justify-content: space-evenly;
+        padding-bottom: 20px;
+    }
+
+    .btn-image-reomve{
+        border: 1px solid #D43333;
+        background-color: #D43333;
+        padding: 4px 13px;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    .btn-image-Edit{
+        border: 1px solid #F2972D;
+        background-color: #F2972D;
+        padding: 4px 13px;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    .btn-image-main {
+        border: 1px solid #007bff;
+        background-color: #007bff;
+        padding: 4px 13px;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    .is-main{
+        position:absolute;
+        top:10px;
+        left:10px;
+        z-index: 200;
+    }
+</style>
+
+
+
+<div class="content">
+    <div class="container-fluid">
+        @if (TempData["NoImage"] != null && !string.IsNullOrEmpty((string)TempData["NoImage"]))
+        {
+            <div class="row">
+                <div class="alert alert-danger" role="alert">
+                    @((string)TempData["NoImage"])
+                </div>
+            </div>
+        }
+        <div class="row d-flex align-items-center">
+            <a class="btn-Add" asp-action="AddImage" asp-route-id="@Model.id">Add New Image</a>
+            <div class="ml-3">
+                <a asp-action="Index" class="btn btn-light">Back to List</a>
+            </div>
+        </div>
+        <hr>
+        <div cite="row justify-content-between">
+            <div class="col-md-12 d-flex flex-wrap" style="gap:20px;">
+                @if (Model.itemImages != null && Model.itemImages.Count() > 0)
+                {
+                    foreach (var image in Model.itemImages)
+                    {
+                        <div class="image-card-container">
+                            @if(image.mainImage)
+                            {
+                                <svg class="is-main" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 24L9 19L19 29L39 9L44 14L19 39L4 24Z" stroke="#41D43E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+
+                            }
+                            <img class="image-card" src="data:image/png;base64,@image.imageBase" />
+                            <div class="card-action">
+                                <a asp-action="EditImage" asp-route-imageId="@image.id" asp-route-itemId="@image.itemId" class="btn-image-Edit">
+                                    Edit
+                                </a>
+
+                                <a asp-action="SetMain" asp-route-imageId="@image.id" asp-route-itemId="@image.itemId" class="btn-image-main">
+                                    main
+                                </a>
+
+                                <a asp-action="RemoveImage" asp-route-imageId="@image.id" asp-route-itemId="@image.itemId" class="btn-image-reomve">
+                                    Remove
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@*@if (Model.CurrentItemImages.Count() == 5)
+                {
+                <form asp-action="Images" disabled enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="itemId" />
+                <div class="form-group mt-4 mb-4">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" accept="image/*" multiple="multiple" max="@Model.CurrentItemImages.Count() - 5" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+                <div class="d-flex align-items-center">
+                <div>
+                <input type="submit" value="Save" class="btn btn-secondary" />
+                </div>
+                <div class="ml-3">
+                <a asp-action="Index" class="btn btn-light">Back to List</a>
+                </div>
+                </div>
+                </form>
+                }*@

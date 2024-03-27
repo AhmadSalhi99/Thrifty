@@ -1,0 +1,127 @@
+﻿@using Thrifty.Models
+@model List<ItemCategory>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<style>
+    .btn-More-Detils {
+        display: flex;
+        align-items: center;
+        padding-inline: 15px;
+        padding-block: 5px;
+        background-color: var(--bg-color);
+        color: var(--title-color);
+        border:none;
+    }
+
+        .btn-More-Detils i {
+            padding-inline-start:10px;
+        }
+
+    .new__data{
+        width:100%;
+    }
+    
+    .d-flex{
+        display:flex !important;
+    }
+
+    .align-items-center{
+        align-items:center;
+    }
+
+    .justify-content-between{
+        justify-content:space-between;
+    }
+
+
+    .modal{
+        position:absolute;
+        left: 0;
+        right:0;
+        top:0;
+        bottom:0;
+        background-color: #000000a6;
+        display:flex;
+        margin:auto;
+        z-index:10000000;
+    }
+
+    .modal-conten{
+        max-width:300px;
+        height : 70vh;
+        background-color: var(--bg-color);
+    }
+  
+</style>
+
+<main class="main">
+    <section class="home section" id="home">
+        <div class="home__container container grid">
+            <div class="home__data">
+                <h1 class="home__title">
+                    Thrifty Clothing <br>
+                    Collection
+                </h1>
+                <a href="#new" class="button__link">
+                    EXPLORE <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+            <div class="home__images">
+                <img src="Img/Home_2.jpg" alt="home image">
+                <img src="Img/Home_1.jpg" alt="home image">
+            </div>
+        </div>
+    </section>
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var cat in Model)
+        {
+            if (cat.Items.Count() > 0)
+            {
+                <section class="new section" id="new">
+                    <h2 class="section__title">
+                        @cat.name
+                    </h2>
+                    <div class="new__container container grid">
+                        @foreach (var item in cat.Items)
+                        {
+                            <article class="new__card">
+                                @if(item.mainImage != null)
+                                {
+                                    <img src="data:image/png;base64,@item.mainImage.imageBase" alt="new image" class="new__img">
+                                }
+                                <form id="itemMoreDetils" class="new__link" method="post" action="/Home/GetModal">
+                                    <div class="new__data">
+                                        <h2 class="new__title">
+                                            @item.name
+                                        </h2>
+                                        <p>
+                                            Price : @item.price JOD
+                                        </p>
+                                        <P class="d-flex align-items-center justify-content-between">
+                                            Size : @item.size
+                                            <a type="submit" asp-action="Index" asp-controller="HomeItem" asp-route-id="@item.id" class="btn-More-Detils">
+                                                More Detils
+                                                <i class="ri-arrow-right-line"></i>
+                                            </a>
+                                        </P>
+                                    </div>
+                                </form>
+                            </article>
+                        }
+                    </div>
+                </section>
+            }
+        }
+    }
+</main>
+
+
+
+@Html.Partial("_LayoutFooter")
+
+

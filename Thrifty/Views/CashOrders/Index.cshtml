@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Thrifty.Models.OrderDetails>
+
+@{
+    ViewData["navTitel"] = "All Cash Orders";
+    ViewData["navActive"] = "CashOrders";
+    ViewData["Title"] = "Cash Orders";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+
+<link href="~/css/jqdatatable/jquery.datatables.min.css" rel="stylesheet" />
+
+<div class="content">
+    <div class="container-fluid">
+        <hr>
+        <div cite="row">
+            <table id="CashOrders">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrderNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            Item Name
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrderDate)
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Buyer Name
+                        </th>
+                        <th>
+                            Buyer Mobile
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.OrderNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Item!.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.OrderDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.OrderStatus!.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.User!.fullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.User!.mobileNumber)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <a class="btn-Action-Reject mr-2" asp-action="Reject" asp-route-id="@order.Id">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17.94 7.752L13.692 12L17.94 16.248L16.248 17.94L12 13.704L7.764 17.94L6.06 16.236L10.296 12L6.06 7.764L7.764 6.06L12 10.296L16.248 6.06L17.94 7.752Z" fill="black" />
+                                        </svg>
+                                    </a>
+                                    @if (order.statusId == 1)
+                                    {
+                                        <a class="btn-Action-Accept mr-2" asp-action="Accept" asp-route-id="@order.Id">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M22.2891 2.29688L23.707 3.70312L8.00391 19.418L0.292969 11.707L1.71094 10.2891L8.00391 16.582L22.2891 2.29688Z" fill="black" />
+                                            </svg>
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#CashOrders').dataTable({
+            });
+        });
+    </script>
+}
+

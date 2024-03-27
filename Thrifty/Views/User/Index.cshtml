@@ -1,0 +1,75 @@
+﻿@using Thrifty.Models
+@model ICollection<User>
+
+@{
+    ViewData["navTitel"] = "All Users";
+    ViewData["navActive"] = "User";
+    ViewData["Title"] = "User";
+    Layout = "_dashbord";
+}
+
+<link href="~/css/jqdatatable/jquery.datatables.min.css" rel="stylesheet" />
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <a href="@Url.Action("Add" ,"User")" class="btn-Add">Create New User</a>
+        </div>
+        <hr>
+
+        <div cite="row">
+            <table id="Categores">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th style="max-width:20px !important;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.id</td>
+                            <td>@user.fullName</td>
+                            <td>@user.email</td>
+                            <td>@user.role.name</td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <a href="@Url.Action("Edit")?id=@user.id" class="btn-Action-Edit mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M6 22C5.45 22 4.979 21.804 4.587 21.412C4.195 21.02 3.99934 20.5493 4 20V4C4 3.45 4.196 2.979 4.588 2.587C4.98 2.195 5.45067 1.99934 6 2H13.175C13.4417 2 13.696 2.05 13.938 2.15C14.18 2.25 14.3923 2.39167 14.575 2.575L19.425 7.425C19.6083 7.60834 19.75 7.821 19.85 8.063C19.95 8.305 20 8.559 20 8.825V12H18V9H14C13.7167 9 13.479 8.904 13.287 8.712C13.095 8.52 12.9993 8.28267 13 8V4H6V20H12V22H6ZM18.3 14.525L19.375 15.6L15.5 19.45V20.5H16.55L20.425 16.65L21.475 17.7L17.475 21.7C17.375 21.8 17.2623 21.875 17.137 21.925C17.0117 21.975 16.8827 22 16.75 22H14.5C14.3667 22 14.25 21.95 14.15 21.85C14.05 21.75 14 21.6333 14 21.5V19.25C14 19.1167 14.025 18.9873 14.075 18.862C14.125 18.7367 14.2 18.6243 14.3 18.525L18.3 14.525ZM21.475 17.7L18.3 14.525L19.75 13.075C19.9333 12.8917 20.1667 12.8 20.45 12.8C20.7333 12.8 20.9667 12.8917 21.15 13.075L22.925 14.85C23.1083 15.0333 23.2 15.2667 23.2 15.55C23.2 15.8333 23.1083 16.0667 22.925 16.25L21.475 17.7Z" fill="black" />
+                                        </svg>
+                                    </a>
+                                    <a href="@Url.Action("Delete")?id=@user.id" class="btn-Action-Delete mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M16 9V19H8V9H16ZM14.5 3H9.5L8.5 4H5V6H19V4H15.5L14.5 3ZM18 7H6V19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7Z" fill="black" />
+                                        </svg>
+                                    </a>
+                                    <a href="@Url.Action("ChangePassword")?id=@user.id" class="btn-Action-change mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M12.63 2C18.16 2 22.64 6.5 22.64 12C22.64 17.5 18.16 22 12.63 22C9.12 22 6.05 20.18 4.26 17.43L5.84 16.18C7.25 18.47 9.76 20 12.64 20C14.7617 20 16.7966 19.1571 18.2969 17.6569C19.7971 16.1566 20.64 14.1217 20.64 12C20.64 9.87827 19.7971 7.84344 18.2969 6.34315C16.7966 4.84285 14.7617 4 12.64 4C8.56 4 5.2 7.06 4.71 11H7.47L3.73 14.73L0 11H2.69C3.19 5.95 7.45 2 12.63 2ZM15.59 10.24C16.09 10.25 16.5 10.65 16.5 11.16V15.77C16.5 16.27 16.09 16.69 15.58 16.69H10.05C9.54 16.69 9.13 16.27 9.13 15.77V11.16C9.13 10.65 9.54 10.25 10.04 10.24V9.23C10.04 7.7 11.29 6.46 12.81 6.46C14.34 6.46 15.59 7.7 15.59 9.23V10.24ZM12.81 7.86C12.06 7.86 11.44 8.47 11.44 9.23V10.24H14.19V9.23C14.19 8.47 13.57 7.86 12.81 7.86Z" fill="black" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Categores').dataTable({
+            });
+        });
+
+    </script>
+}

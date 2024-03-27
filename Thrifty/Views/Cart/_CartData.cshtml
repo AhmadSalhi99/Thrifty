@@ -1,0 +1,182 @@
+﻿@model Thrifty.Models.CartItem
+@{
+    List<int> itemIds = Model?.items?.Select(x => x.id).ToList();
+}
+@functions {
+    public Dictionary<string, string> GetRouteData(int[] ids)
+    {
+        var routeData = new Dictionary<string, string>();
+        for (var i = 0; i < ids.Length; i++)
+        {
+            routeData.Add($"itemsId[{i}]", ids[i].ToString());
+        }
+        return routeData;
+    }
+}
+<style>
+    .item_type {
+        color: var(--title-color);
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .item_name {
+        color: var(--title-color);
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .item_size {
+        color: var(--title-color);
+        font-size: 18px;
+    }
+
+    .item_color {
+        color: var(--title-color);
+        font-size: 17px;
+    }
+
+    .item_price {
+        color: var(--title-color);
+        font-size: 20px;
+    }
+
+    .item_description {
+        color: var(--title-color);
+        font-size: 18px;
+        padding-top: 30px;
+    }
+
+
+    .item-count, .item-total-price {
+        color: var(--title-color);
+        font-family: inherit;
+        font-size: 18px;
+    }
+
+
+    .item-image {
+        width: 150px;
+        object-fit: cover;
+    }
+
+    .mi-20 {
+        margin-inline-end: 20px;
+    }
+
+    .btn-remove {
+        font-size: 17px;
+        border: none;
+        border-radius: 5px;
+        color: #bb1616;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 150px 400px 200px 100px;
+        grid-gap: 60px;
+        padding-top: 10px;
+    }
+
+
+    @@media screen and (max-width: 768px) {
+        .grid-container {
+            grid-template-columns: 1fr;
+            grid-gap: 30px;
+        }
+    }
+
+    @@media screen and (min-width: 769px) and (max-width: 1024px) {
+        .grid-container {
+            grid-template-columns: 150px 1fr;
+            grid-gap: 30px;
+        }
+    }
+
+    .no-data {
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .no-data > p {
+            color: var(--title-color);
+            font-family: inherit;
+            font-size: 30px;
+        }
+
+    .btn-add-cart{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        padding-inline: 45px;
+        background: var(--bg-color);
+        color: var(--title-color);
+        border: 1px solid var(--title-color);
+        border-radius:3px;
+        padding-block: 6px;
+    }
+
+    .cart-add-svg{
+        fill: var(--title-color);
+    }
+</style>
+
+@if (Model.items != null && Model.items.Count() > 0)
+{
+    foreach (var item in Model.items)
+    {
+        <div class="col-md-12">
+            <hr />
+            <div class="grid-container">
+                <div class="grid-item">
+                    <img src="data:image/png;base64,@item.mainImage!.imageBase" alt="new image" class="new__img item-image mi-20">
+                </div>
+                <div class="grid-item">
+                    <div class="d-flex flex-column align-items-start justify-content-start mi-20">
+                        <p class="item_name">@item.name</p>
+                        <p class="item_type">@item.ItemType!.name</p>
+                        <p class="item_size">Size : @item.size</p>
+                        <p class="item_color">Color : @item.color</p>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="d-flex flex-column align-items-start justify-content-between mi-20">
+                        <h2>Price</h2>
+                        <p>@item.price JOD</p>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <button data-item-id="@item.id" class="btn-remove Remove-item">Remove</button>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="col-md-12">
+        <div class="d-flex align-items-start justify-content-between">
+            <p class="item-count">Item : @Model.items.Count()</p>
+            <div class="d-flex">
+                <p class="item-total-price" style="margin-inline-end:20px;"> Total : @Model.totalPrice</p>
+                <a asp-action="checkout" asp-all-route-data="@GetRouteData(itemIds!.ToArray())"  asp-controller="Cart" class="btn-add-cart">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="cart-add-svg" d="M12 10L10.6 8.6L12.175 7H8V5H12.175L10.575 3.4L12 2L16 6L12 10ZM7 22C6.45 22 5.979 21.804 5.587 21.412C5.195 21.02 4.99933 20.5493 5 20C5 19.45 5.196 18.979 5.588 18.587C5.98 18.195 6.45067 17.9993 7 18C7.55 18 8.021 18.196 8.413 18.588C8.805 18.98 9.00067 19.4507 9 20C9 20.55 8.804 21.021 8.412 21.413C8.02 21.805 7.54933 22.0007 7 22ZM17 22C16.45 22 15.979 21.804 15.587 21.412C15.195 21.02 14.9993 20.5493 15 20C15 19.45 15.196 18.979 15.588 18.587C15.98 18.195 16.4507 17.9993 17 18C17.55 18 18.021 18.196 18.413 18.588C18.805 18.98 19.0007 19.4507 19 20C19 20.55 18.804 21.021 18.412 21.413C18.02 21.805 17.5493 22.0007 17 22ZM1 4V2H4.275L8.525 11H15.525L19.425 4H21.7L17.3 11.95C17.1167 12.2833 16.8707 12.5417 16.562 12.725C16.2533 12.9083 15.916 13 15.55 13H8.1L7 15H19V17H7C6.25 17 5.679 16.675 5.287 16.025C4.895 15.375 4.88267 14.7167 5.25 14.05L6.6 11.6L3 4H1Z" fill="black" />
+                    </svg>
+                    Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-md-12 no-data">
+        <p>You cart is empty</p>
+    </div>
+}
+
+@*asp-route-itemsId="@string.Join(",", itemIds)"*@

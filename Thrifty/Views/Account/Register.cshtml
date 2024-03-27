@@ -1,0 +1,123 @@
+﻿@model Thrifty.Models.RegisterUser
+@{
+    Layout = "_Account";
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .alter-custome {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .container-login100-form-btn {
+        margin-top: 50px;
+    }
+
+    #cityId {
+        width: 100%;
+        height: 100%;
+        padding-left: 27px;
+        background-color: var(--body-color);
+        line-height: 1.2;
+        font-size: 13px;
+        color: var(--title-color);
+        padding-top: 20px;
+        border-radius:30px;
+    }
+
+    .cityId-label-input100 {
+        top: 6px !important;
+        font-size: 13px !important;
+        position: absolute;
+        left: 29px;
+        color: var(--title-color);
+    }
+
+
+    select {
+        outline: none !important;
+        border: none !important;
+    }
+</style>
+
+
+
+<form asp-action="Register" class="login100-form validate-form">
+    @if (ViewData["ErrorRegister"] != null && !string.IsNullOrEmpty((string)ViewData["ErrorRegister"]))
+    {
+        <div class="alert alert-danger alter-custome" role="alert">
+            @((string)ViewData["ErrorRegister"])
+        </div>
+    }
+    <span class="login100-form-title p-b-43">
+        <a href="@Url.Action("Index","Home")#home" class="nav__logo">
+            <img id="nav-logo" class="light" src="~/img/logo.png" style="width: 120px;" />
+        </a>
+        Register
+    </span>
+    <div class="wrap-input100">
+        <span asp-validation-for="email" class="text-danger"></span>
+        <input class="input100" asp-for="email" class="form-control" placeholder="  " />
+        <span class="focus-input100"></span>
+        <span class="label-input100">@Html.DisplayNameFor(model => model.email)</span>
+    </div>
+
+
+
+    <div class="wrap-input100">
+        <span asp-validation-for="fullName" class="text-danger"></span>
+        <input class="input100" asp-for="fullName" class="form-control" placeholder="  " />
+        <span class="focus-input100"></span>
+        <span class="label-input100">@Html.DisplayNameFor(model => model.fullName)</span>
+    </div>
+
+
+    <div class="wrap-input100">
+        <span asp-validation-for="mobileNumber" class="text-danger"></span>
+        <input class="input100" asp-for="mobileNumber" class="form-control" placeholder="  " />
+        <span class="focus-input100"></span>
+        <span class="label-input100">@Html.DisplayNameFor(model => model.mobileNumber)</span>
+    </div>
+
+
+    @*<div class="wrap-input100">
+        <span asp-validation-for="cityId" class="text-danger"></span>
+        <select asp-for="cityId" class="" asp-items="ViewBag.Cities" class="form-control">
+            <option disabled selected>--- SELECT ---</option>
+        </select>
+        <span class="focus-input100"></span>
+        <span class="cityId-label-input100 ">@Html.DisplayNameFor(model => model.cityId)</span>
+    </div>*@
+
+
+
+    <div class="wrap-input100">
+        <span asp-validation-for="password" class="text-danger"></span>
+        <input class="input100" asp-for="password" class="form-control" type="password" placeholder="  " />
+        <span class="focus-input100"></span>
+        <span class="label-input100">@Html.DisplayNameFor(model => model.password)</span>
+    </div>
+
+
+    <div class="wrap-input100">
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <input class="input100" asp-for="ConfirmPassword" class="form-control" type="password" placeholder="  " />
+        <span class="focus-input100"></span>
+        <span class="label-input100">@Html.DisplayNameFor(model => model.ConfirmPassword)</span>
+    </div>
+    <div class="container-login100-form-btn">
+        <button class="login100-form-btn">
+            Register
+        </button>
+    </div>
+
+    <div class="text-center p-t-46 p-b-20">
+        <a href="@Url.Action("Login" , "Account")" class="txt2">
+            or login
+        </a>
+    </div>
+
+</form>

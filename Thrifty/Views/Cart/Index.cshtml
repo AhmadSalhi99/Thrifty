@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap-grid.min.css" rel="stylesheet" />
+<style>
+    .main {
+        background-color: var(--bg-color);
+        padding-bottom: 200px;
+    }
+
+    .home {
+        padding-top: 150px;
+        min-height: 100vh;
+    }
+
+    .gap-30 {
+        gap: 30px;
+    }
+
+
+    .visually-hidden,
+    .visually-hidden-focusable:not(:focus):not(:focus-within) {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+
+
+    .spinner-border {
+        position: absolute;
+        top: 48%;
+        left: 48%;
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        vertical-align: -0.125em;
+        border: 0.25em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: 0.75s linear infinite spinner-border;
+        animation: 0.75s linear infinite spinner-border;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .spinner-border,
+        .spinner-grow {
+            -webkit-animation-duration: 1.5s;
+            animation-duration: 1.5s;
+        }
+    }
+
+
+    @@keyframes spinner-border {
+        to {
+            transform: rotate(360deg)
+        }
+    }
+</style>
+
+<main class="main">
+    <section class="home section">
+        <div class="container">
+            <div class="row d-flex justify-content-between f-wrap-reverse gap-30" id="to-append">
+                <div id="to-reomve" class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            LoadCartData();
+
+            
+        })
+
+        async function LoadCartData() {
+            var cartData = localStorage.getItem('cart');
+            var cartItems = cartData ? JSON.parse(cartData) : [0];
+            await $.ajax({
+                method: "post",
+                url: "@Url.Action("LoadCartViewData", "Cart")",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(cartItems)
+            }).done(function (data) {
+                $('#to-reomve').remove();
+                $('#to-append').append(data);
+
+                $(".Remove-item").click(function () {
+                    var itemIdToRemove = $(this).data('item-id');
+                    var arrayFromLocalStorage = JSON.parse(localStorage.getItem('cart'));
+                    var updatedArray = arrayFromLocalStorage.filter(function (itemId) {
+                        return itemId !== itemIdToRemove;
+                    });
+                    localStorage.setItem('cart', JSON.stringify(updatedArray));
+                    var spiner = `<div id="to-reomve" class="spinner-border" role="status"><span class="visually-hidden"></span> </div>`
+                    $("#to-append").empty().append(spiner);
+                    // $("#to-append");
+                    LoadCartData();
+                })
+            })
+        }
+
+
+        function addToCart(productId) {
+            // Retrieve existing cart data from local storage (if any)
+            var cartData = localStorage.getItem('cart');
+            // Parse the JSON data or initialize an empty array if no data exists
+            var cartItems = cartData ? JSON.parse(cartData) : [];
+            // Check if the product already exists in the cart
+            var exists = cartItems.some(item => item === productId);
+            if (!exists) {
+                // Add the new product to the cart
+                cartItems.push(productId);
+                // Store the updated cart data in local storage
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                document.querySelector(".alert-success").classList.remove("hiden")
+                document.querySelector(".alert-danger").classList.add("hiden")
+            } else {
+
+                document.querySelector(".alert-success").classList.add("hiden")
+                document.querySelector(".alert-danger").classList.remove("hiden")
+                // Handle the case where the product is already in the cart
+                console.log('Product already exists in the cart.');
+            }
+        }
+    </script>
+}

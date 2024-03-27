@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Thrifty.Models.Item>
+
+@{
+    ViewData["navTitel"] = "All Item";
+    ViewData["navActive"] = "Item";
+    ViewData["Title"] = "Items";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+<link href="~/css/jqdatatable/jquery.datatables.min.css" rel="stylesheet" />
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <a class="btn-Add" asp-action="Create">Create New Item</a>
+        </div>
+        <hr>
+        <div cite="row">
+            <table id="Users">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.color)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.size)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.outOfStock)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User.email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemType.name)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.color)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.size)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.outOfStock)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemType.name)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <a class="btn-Action-Edit mr-2" asp-action="Edit" asp-route-id="@item.id">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M6 22C5.45 22 4.979 21.804 4.587 21.412C4.195 21.02 3.99934 20.5493 4 20V4C4 3.45 4.196 2.979 4.588 2.587C4.98 2.195 5.45067 1.99934 6 2H13.175C13.4417 2 13.696 2.05 13.938 2.15C14.18 2.25 14.3923 2.39167 14.575 2.575L19.425 7.425C19.6083 7.60834 19.75 7.821 19.85 8.063C19.95 8.305 20 8.559 20 8.825V12H18V9H14C13.7167 9 13.479 8.904 13.287 8.712C13.095 8.52 12.9993 8.28267 13 8V4H6V20H12V22H6ZM18.3 14.525L19.375 15.6L15.5 19.45V20.5H16.55L20.425 16.65L21.475 17.7L17.475 21.7C17.375 21.8 17.2623 21.875 17.137 21.925C17.0117 21.975 16.8827 22 16.75 22H14.5C14.3667 22 14.25 21.95 14.15 21.85C14.05 21.75 14 21.6333 14 21.5V19.25C14 19.1167 14.025 18.9873 14.075 18.862C14.125 18.7367 14.2 18.6243 14.3 18.525L18.3 14.525ZM21.475 17.7L18.3 14.525L19.75 13.075C19.9333 12.8917 20.1667 12.8 20.45 12.8C20.7333 12.8 20.9667 12.8917 21.15 13.075L22.925 14.85C23.1083 15.0333 23.2 15.2667 23.2 15.55C23.2 15.8333 23.1083 16.0667 22.925 16.25L21.475 17.7Z" fill="black" />
+                                        </svg>
+                                    </a>
+                                    <a class="btn-Action-Images mr-2" asp-action="Images" asp-route-id="@item.id">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20.25 3.75H3.75C3.35218 3.75 2.97064 3.90804 2.68934 4.18934C2.40804 4.47064 2.25 4.85218 2.25 5.25V18.75C2.25 19.1478 2.40804 19.5294 2.68934 19.8107C2.97064 20.092 3.35218 20.25 3.75 20.25H20.25C20.6478 20.25 21.0294 20.092 21.3107 19.8107C21.592 19.5294 21.75 19.1478 21.75 18.75V5.25C21.75 4.85218 21.592 4.47064 21.3107 4.18934C21.0294 3.90804 20.6478 3.75 20.25 3.75ZM20.25 5.25V14.8828L17.8059 12.4397C17.6666 12.3004 17.5013 12.1898 17.3193 12.1144C17.1373 12.039 16.9422 12.0002 16.7452 12.0002C16.5481 12.0002 16.3531 12.039 16.1711 12.1144C15.989 12.1898 15.8237 12.3004 15.6844 12.4397L13.8094 14.3147L9.68438 10.1897C9.4031 9.9086 9.02172 9.7507 8.62406 9.7507C8.22641 9.7507 7.84503 9.9086 7.56375 10.1897L3.75 14.0034V5.25H20.25ZM3.75 16.125L8.625 11.25L16.125 18.75H3.75V16.125ZM20.25 18.75H18.2466L14.8716 15.375L16.7466 13.5L20.25 17.0044V18.75ZM13.5 9.375C13.5 9.1525 13.566 8.93499 13.6896 8.74998C13.8132 8.56498 13.9889 8.42078 14.1945 8.33564C14.4 8.25049 14.6262 8.22821 14.8445 8.27162C15.0627 8.31502 15.2632 8.42217 15.4205 8.5795C15.5778 8.73684 15.685 8.93729 15.7284 9.15552C15.7718 9.37375 15.7495 9.59995 15.6644 9.80552C15.5792 10.0111 15.435 10.1868 15.25 10.3104C15.065 10.434 14.8475 10.5 14.625 10.5C14.3266 10.5 14.0405 10.3815 13.8295 10.1705C13.6185 9.95952 13.5 9.67337 13.5 9.375Z" fill="black" />
+                                        </svg>
+
+                                    </a>
+                                    <a class="btn-Action-Delete mr-2" asp-action="Delete" asp-route-id="@item.id">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M16 9V19H8V9H16ZM14.5 3H9.5L8.5 4H5V6H19V4H15.5L14.5 3ZM18 7H6V19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7Z" fill="black" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Users').dataTable({
+            });
+        });
+    </script>
+}
+
+

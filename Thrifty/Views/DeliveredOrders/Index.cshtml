@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Thrifty.Models.OrderDetails>
+
+@{
+    ViewData["navTitel"] = "All Delivered Orders";
+    ViewData["navActive"] = "DeliveredOrders";
+    ViewData["Title"] = "Delivered Orders";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+
+<link href="~/css/jqdatatable/jquery.datatables.min.css" rel="stylesheet" />
+
+<div class="content">
+    <div class="container-fluid">
+        <hr>
+        <div cite="row">
+            <table id="DeliveredOrders">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrderNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrderDate)
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Buyer Name
+                        </th>
+                        <th>
+                            Buyer Mobile
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.OrderNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.OrderDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.OrderStatus!.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.User!.fullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => order.User!.mobileNumber)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <a class="btn-Action-Edit mr-2" asp-action="Details" asp-route-orderNumber="@order.OrderNumber">
+                                        <svg width="24" height="24" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20.984 30.7689C23.9718 30.7689 26.3939 28.3468 26.3939 25.359C26.3939 22.3711 23.9718 19.949 20.984 19.949C17.9961 19.949 15.574 22.3711 15.574 25.359C15.574 28.3468 17.9961 30.7689 20.984 30.7689Z" fill="#D0CFCE" />
+                                            <path d="M24.8232 21.3481V5.33701H9.20547V29.5259H17.0134M11.5048 7.7875H15.5555M11.5048 11.9097H22.1992M11.5048 13.7428H22.1992M11.5048 15.5755H22.1992M11.5048 17.4086H22.1992M11.5048 19.2417H22.1992M17.6847 21.0729H11.5062M16.1632 22.9056H11.5062M15.6139 24.7382H11.5062" stroke="black" stroke-width="0.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M20.9839 30.7689C23.9718 30.7689 26.3939 28.3468 26.3939 25.359C26.3939 22.3711 23.9718 19.949 20.9839 19.949C17.9961 19.949 15.574 22.3711 15.574 25.359C15.574 28.3468 17.9961 30.7689 20.9839 30.7689Z" stroke="black" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M24.8233 29.5259L27.4808 32.1835M16.2551 23.5535H22.7865M15.6392 26.1717H22.7865" stroke="black" stroke-width="0.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#DeliveredOrders').dataTable({
+            });
+        });
+    </script>
+}
+

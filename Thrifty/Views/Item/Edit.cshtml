@@ -1,0 +1,122 @@
+﻿@using Thrifty.Authentication;
+@model Thrifty.Models.Item
+@{
+    ViewData["navTitel"] = $"Edit Item ({Model.name})";
+    ViewData["navActive"] = "Item";
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_dashbord.cshtml";
+}
+
+
+<style>
+    .Item-Image {
+        width: 118px;
+        box-shadow: 1px 1px 4px 0px #000;
+    }
+</style>
+
+
+<div class="content">
+    <div class="container-fluid">
+        <div cite="row">
+            <div class="col-md-4">
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="id" />
+                    <div class="form-group">
+                        <label asp-for="name" class="control-label"></label>
+                        <input asp-for="name" class="form-control" />
+                        <span asp-validation-for="name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="description" class="control-label"></label>
+                        <textarea rows="4" asp-for="description" class="form-control"></textarea>
+                        <span asp-validation-for="description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MadeIn" class="control-label"></label>
+                        <textarea asp-for="MadeIn" class="form-control"> </textarea>
+                        <span asp-validation-for="MadeIn" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="price" class="control-label"></label>
+                        <input asp-for="price" class="form-control" />
+                        <span asp-validation-for="price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="color" class="control-label"></label>
+                        <input asp-for="color" class="form-control" />
+                        <span asp-validation-for="color" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="size" class="control-label"></label>
+                        <input asp-for="size" class="form-control" />
+                        <span asp-validation-for="size" class="text-danger"></span>
+                    </div>
+                    @if (AuthRole.IsUserInRoll("Admin"))
+                    {
+                        <div class="form-group">
+                            <label asp-for="userId" class="control-label"></label>
+                            <select asp-for="userId" class="form-control" asp-items="ViewBag.userId">
+                            </select>
+                            <span asp-validation-for="userId" class="text-danger"></span>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <label asp-for="ItemState" class="control-label"></label>
+                        <div class="radio-container" style="width:100%;margin-inline-start: 20px;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ItemState" id="ItemState" value="1" @(Model.ItemState == 1 ? "checked" : "")>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    VeryGood
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ItemState" value="2" id="ItemState" @(Model.ItemState == 2 ? "checked" : "")>
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Good
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ItemState" value="3" id="ItemState" @(Model.ItemState == 3 ? "checked" : "")>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    Bad
+                                </label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="ItemState" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ItemTypeId" class="control-label"></label>
+                        <select asp-for="ItemTypeId" class="form-control" asp-items="ViewBag.ItemTypeId">
+                        </select>
+                        <span asp-validation-for="ItemTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="outOfStock" /> @Html.DisplayNameFor(model => model.outOfStock)
+                        </label>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <input type="submit" value="Save" class="btn btn-secondary" />
+                        </div>
+                        <div class="ml-3">
+                            <a asp-action="Index" class="btn btn-light">Back to List</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+

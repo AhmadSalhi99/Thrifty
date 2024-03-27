@@ -1,0 +1,62 @@
+﻿@model Thrifty.Models.LoginUser
+@{
+    Layout = "_Account";
+    ViewData["Title"] = "Login";
+}
+
+<style>
+
+
+   
+/*
+    .input100 {
+        color: var(--title-color);
+    }
+
+    input::placeholder{
+        color: var(--title-color);
+    }*/
+</style>
+
+
+
+<form asp-action="Login" class="login100-form validate-form">
+    @if (ViewData["ErrorLogin"] != null && !string.IsNullOrEmpty((string)ViewData["ErrorLogin"]))
+    {
+        <div class="alert alert-danger alter-custome" role="alert">
+            @((string)ViewData["ErrorLogin"])
+        </div>
+    }
+    <span class="login100-form-title p-b-43">
+        <a href="@Url.Action("Index","Home")#home" class="nav__logo">
+            <img id="nav-logo" class="light" src="~/img/logo.png" style="width: 120px;" />
+        </a>
+        Login
+    </span>
+    <div class="wrap-input100">
+        <span asp-validation-for="email" class="text-danger"></span>
+        <input class="input100" asp-for="email" class="form-control" placeholder="  " />
+        <span class="focus-input100"></span>
+        <span class="label-input100">@Html.DisplayNameFor(model => model.email)</span>
+    </div>
+
+
+    <div class="wrap-input100">
+        <span asp-validation-for="email" class="text-danger"></span>
+        <input class="input100" asp-for="password" class="form-control" type="password" placeholder="  " />
+        <span class="focus-input100"></span>
+        <span class="label-input100">@Html.DisplayNameFor(model => model.password)</span>
+    </div>
+
+    <div class="container-login100-form-btn" style="margin-block-start:90px;">
+        <button class="login100-form-btn">
+            Login
+        </button>
+    </div>
+    <div class="text-center p-t-46 p-b-20">
+        <a href="@Url.Action("Register" , "Account")" class="txt2">
+            or sign up
+        </a>
+    </div>
+</form>
+
